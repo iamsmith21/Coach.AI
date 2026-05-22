@@ -1,0 +1,19 @@
+{
+  "//": "Per RULE 2: no AI completions for the first 8 weeks. Type every character.",
+  "cursor.cpp.disabledLanguages": ["typescript", "javascript", "typescriptreact", "javascriptreact"],
+  "cursor.general.disableTab": true,
+  "editor.inlineSuggest.enabled": false,
+  "editor.suggest.preview": false,
+  "editor.quickSuggestions": {
+    "other": "off",
+    "comments": "off",
+    "strings": "off"
+  },
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.formatOnSave": true,
+  "files.eol": "\n",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}

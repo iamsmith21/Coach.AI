@@ -1,0 +1,16 @@
+{
+  "name": "coach-ai",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AI mock interviewer for coding and system design.",
+  "packageManager": "pnpm@10.22.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "db:up": "docker compose up -d postgres redis",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres redis",
+    "db:reset": "docker compose down -v && docker compose up -d postgres redis"
+  }
+}
