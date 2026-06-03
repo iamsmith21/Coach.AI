@@ -12,5 +12,8 @@
     "db:down": "docker compose down",
     "db:logs": "docker compose logs -f postgres redis",
     "db:reset": "docker compose down -v && docker compose up -d postgres redis"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3"
   }
 }
