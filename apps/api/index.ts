@@ -2,6 +2,8 @@ import express, { type Request, type Response, type NextFunction } from 'express
 import { getProblems, createProblem } from './routes/problems.js';
 import { signup, login } from './routes/users.js';
 import { createLogger } from './logger.js';
+import { requireAuth } from './middleware/auth.js';
+import { createSession, getSession } from './routes/sessions.js';
 
 const log = createLogger('API');
 const app = express();
@@ -23,6 +25,11 @@ app.get('/problems', getProblems);
 app.post('/problems', createProblem);
 app.post('/signup', signup);
 app.post('/login', login);
+app.get('/me', requireAuth, (req: Request, res: Response) => {
+  res.status(200).json({ user: req.user });
+});
+app.post('/sessions', requireAuth, createSession);
+app.get('/sessions', requireAuth, getSession);
 
 // 4. Global Error Handler Middleware (Must have all 4 arguments in this exact signature)
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

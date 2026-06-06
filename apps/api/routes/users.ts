@@ -5,8 +5,11 @@ import bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { RequestHandler } from 'express';
+import jwt from 'jsonwebtoken';
 
 const log = createLogger('USERS');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_key';
 
 export const SignupSchema = z.object({
   email: z
@@ -73,9 +76,18 @@ export const signup: RequestHandler = async (req, res, next) => {
       throw new Error('Failed to insert user');
     }
 
+    const token = jwt.sign(
+      {
+        id: insertedUser.id,
+        email: insertedUser.email,
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
     log(`Successfully signed up user ${normalizedEmail}`);
 
-    res.status(201).json(insertedUser);
+    res.status(201).json({ token, user: insertedUser });
   } catch (error) {
     next(error);
     //passed the err to express global err handler.
@@ -111,13 +123,24 @@ export const login: RequestHandler = async (req, res, next) => {
       return;
     }
 
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
     log(`Successfully logged in user: ${normalizedEmail}`);
 
     res.status(200).json({
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      createdAt: user.createdAt,
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        createdAt: user.createdAt,
+      },
     });
   } catch (error) {
     next(error);
